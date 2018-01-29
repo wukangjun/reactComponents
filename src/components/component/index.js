@@ -68,6 +68,5 @@ export default class Component extends React.Component {
 }
 
 Component.propTypes = {
-	className: PropTypes.string,
 	style: PropTypes.object
 }

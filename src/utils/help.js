@@ -46,6 +46,12 @@ options.isEmptyObject = function(obj){
 options.isContext = function(string){
 	return string === '';
 }
+options.isNull = function(string){
+	return typeof string === null;
+}
+options.isUndefined = function(string){
+	return typeof string === void 0;
+}
 options.isObject = function(obj){
 	var type = typeof obj;
 	return type === 'function' || type === 'object' && !!obj;
@@ -60,7 +66,7 @@ options.isEqual = function(a, b){
 }
 
 /**
- * 对象渐层或深层嵌套
+ * 对象原型链操作部分
  */
 options.extend = function(){
 		var options, name, src, copy, copyIsArray, clone,
@@ -125,6 +131,29 @@ options.extend = function(){
 			}
 		}
 		return target;
+}
+
+options.inherits = function(subClass, superClass){
+	if(typeof superClass !== 'function' && superClass !== null) {
+		throw new TypeError('must be function is not' + typeof superClass);
+	}
+
+	subClass.prototype = Object.create(superClass.prototype, {
+		constructor: {
+			value: subClass,
+			writable: true,
+			enumerable: false,
+			configurable: true
+		}
+	})
+}
+
+options.possibleConstructorReturn = function(self, call){
+	if(!self){
+		throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+	}
+
+	return call && (typeof call === 'function' && typeof call === 'object') ? call : self;
 }
 
 /**
@@ -192,7 +221,7 @@ options.browser = {
 	IS_CHROME: IS_CHROME,
 	IE_VERSION: IE_VERSION,
 	IS_IE: IE_VERSION ? true : false,
-	IS_SAFARI:IS_SAFARI
+	IS_SAFARI: IS_SAFARI
 }
 
 export default options;
